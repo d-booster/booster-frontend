@@ -3,7 +3,7 @@ name: Node.js build workflow
 on: [push]
 
 jobs:
-  build_and_deploy:
+  build:
     runs-on: ubuntu-latest
 
     strategy:
@@ -12,19 +12,19 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Read .node-version
         run: echo "NODE_VERSION=$(cat .node-version)" >> $GITHUB_ENV
 
       - name: Use Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
 
       # package-lock.json や node-version が変更されない限りキャッシュを利用する
       - name: Cache Node.js modules
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         id: npm-cache
         with:
           path: node_modules # npm が依存関係を保存する場所
