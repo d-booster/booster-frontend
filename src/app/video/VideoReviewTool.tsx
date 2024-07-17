@@ -1,45 +1,42 @@
 'use client';
 
-import React, { useState, useRef, useEffect } from 'react';
-import { Stage, Layer, Text, Circle, Line, Group } from 'react-konva';
-import ReactPlayer from 'react-player';
 import { Modal, Input } from 'antd';
 import Konva from 'konva';
 import dynamic from 'next/dynamic';
+import React, { useState, useRef, useEffect } from 'react';
+import { Stage, Layer, Text, Circle, Line, Group } from 'react-konva';
 const DynamicReactPlayer = dynamic(
   () => import('react-player'),
   { ssr: false }, // SSRを無効化
 );
 
-const ReactPlayerMemo = React.memo(
-  ({
-    handleProgress,
-  }: {
-    handleProgress: (state: {
-      playedSeconds: number;
-      played: number;
-      loadedSeconds: number;
-      loaded: number;
-    }) => void;
-  }) => {
-    const playerRef = useRef(null);
+const ReactPlayerMemo = React.memo(function ReactPlayer({
+  handleProgress,
+}: {
+  handleProgress: (state: {
+    playedSeconds: number;
+    played: number;
+    loadedSeconds: number;
+    loaded: number;
+  }) => void;
+}) {
+  const playerRef = useRef(null);
 
-    return (
-      <DynamicReactPlayer
-        ref={playerRef}
-        url="assets/Big_Buck_Bunny_360_10s_1MB.mp4"
-        width="100%"
-        height="100%"
-        onProgress={handleProgress}
-        style={{ position: 'absolute', top: 0, left: 0 }}
-        controls={true}
-        onError={(e) => console.error('ReactPlayer error:', e)}
-        onReady={() => console.log('ReactPlayer is ready')}
-        config={{ file: { attributes: { crossOrigin: 'anonymous' } } }}
-      />
-    );
-  },
-);
+  return (
+    <DynamicReactPlayer
+      ref={playerRef}
+      url="assets/Big_Buck_Bunny_360_10s_1MB.mp4"
+      width="100%"
+      height="100%"
+      onProgress={handleProgress}
+      style={{ position: 'absolute', top: 0, left: 0 }}
+      controls={true}
+      onError={(e) => console.error('ReactPlayer error:', e)}
+      onReady={() => console.log('ReactPlayer is ready')}
+      config={{ file: { attributes: { crossOrigin: 'anonymous' } } }}
+    />
+  );
+});
 
 const VideoReviewTool: React.FC = () => {
   type Comment = {
@@ -79,14 +76,21 @@ const VideoReviewTool: React.FC = () => {
   const [isModalVisible, setIsModalVisible] = useState(false); // モーダルの表示状態
   const [inputComment, setInputComment] = useState(''); // モーダル内で入力されたコメント
 
-  const handleAddComment = (e: any) => {
+  const handleAddComment = (e: Konva.KonvaEventObject<MouseEvent>) => {
     e.evt.preventDefault();
     e.evt.stopPropagation();
-    const stage = stageRef.current!.getStage();
+    if (stageRef.current == null) {
+      return;
+    }
+    const stage = stageRef.current.getStage();
+
     const pointerPosition = stage.getPointerPosition();
+    if (pointerPosition == null) {
+      return;
+    }
     const newComment: Comment = {
-      x: pointerPosition!.x / dimensions.width,
-      y: pointerPosition!.y / dimensions.height,
+      x: pointerPosition.x / dimensions.width,
+      y: pointerPosition.y / dimensions.height,
       text: '',
       time: currentTime,
       videoWidth: dimensions.width,
