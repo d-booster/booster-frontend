@@ -15,9 +15,14 @@
     "pre-push": "git diff --quiet --exit-code"
   },
   "dependencies": {
+    "antd": "5.19.1",
+    "canvas": "2.11.2",
+    "konva": "9.3.13",
     "next": "14.2.5",
-    "react": "^18",
-    "react-dom": "^18"
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "react-konva": "18.2.10",
+    "react-player": "2.16.0"
   },
   "devDependencies": {
     "@types/node": "^20",
