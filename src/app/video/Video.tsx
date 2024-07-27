@@ -1,17 +1,50 @@
 import type { KonvaEventObject } from "konva/lib/Node";
 import type { Stage as StageType } from "konva/lib/Stage";
-import type React from "react";
+import dynamic from "next/dynamic";
+import React from "react";
 import { useRef, useState } from "react";
 import { Layer, Rect, Stage } from "react-konva";
 
-type RectangleType = {
-  x: number;
-  y: number;
-  width: number;
-  height: number;
-};
+const DynamicReactPlayer = dynamic(
+  () => import("react-player"),
+  { ssr: false }, // SSRを無効化
+);
+
+const ReactPlayerMemo = React.memo(function ReactPlayer({
+  handleProgress,
+}: {
+  handleProgress: (state: {
+    playedSeconds: number;
+    played: number;
+    loadedSeconds: number;
+    loaded: number;
+  }) => void;
+}) {
+  const playerRef = useRef(null);
+
+  return (
+    <DynamicReactPlayer
+      ref={playerRef}
+      url="assets/sample.mp4"
+      width="100%"
+      height="100%"
+      onProgress={handleProgress}
+      style={{ position: "absolute", top: 0, left: 0 }}
+      controls={true}
+      onError={(e) => console.error("ReactPlayer error:", e)}
+      onReady={() => console.log("ReactPlayer is ready")}
+      config={{ file: { attributes: { crossOrigin: "anonymous" } } }}
+    />
+  );
+});
 
 const Video: React.FC = () => {
+  type RectangleType = {
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+  };
   const [selectedAreaList, setSelectedAreaList] = useState<RectangleType[]>([]);
   // ドラック中に描画されている矩形
   const [newSelectedArea, setNewSelectedArea] = useState<
@@ -64,10 +97,11 @@ const Video: React.FC = () => {
   };
 
   return (
-    <div>
+    <>
+      <ReactPlayerMemo handleProgress={() => console.log("")} />
       <Stage
         width={window.innerWidth}
-        height={window.innerHeight}
+        height={window.innerHeight - 80} // シークバーの高さ分を引く
         onMouseDown={handleMouseDown}
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUp}
@@ -96,7 +130,7 @@ const Video: React.FC = () => {
           )}
         </Layer>
       </Stage>
-    </div>
+    </>
   );
 };
 
