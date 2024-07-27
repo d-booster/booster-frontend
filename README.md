@@ -44,4 +44,11 @@ npm run lint:eslint:fix
 
 ## 方針
 
-WIP
+### UI
+
+NextUI, TailwindCSS がインストールされています。
+
+基本的に、NextUI ライブラリを利用してUIを作成します。利用できるコンポーネントやテーマは以下のリンクからたどってください。
+https://nextui.org/docs/components/button
+
+NextUIで表現できない場合は、TailwindCSS を利用してください。
