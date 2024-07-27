@@ -13,11 +13,15 @@ run-dev: ## npm run dev
 	npm run dev
 
 .PHONY: run
-run: setup-local run-supabase run-dev ## ローカルでアプリケーションを起動する
+run: setup-local run-supabase migrate run-dev ## ローカルでアプリケーションを起動する
 
 .PHONY: check
 check: # formatとlintを実行
 	npm run check
+
+.PHONY: migrate
+migrate:
+	npm run migrate:dev
 
 .PHONY: help
 help: ## 実行できるコマンドを一覧表示する
