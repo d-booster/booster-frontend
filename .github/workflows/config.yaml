@@ -43,5 +43,8 @@ jobs:
             echo "skip npm clean-install"
           fi
 
+      - name: Run lint and format
+        run: npm run check
+
       - name: Run build command
         run: npm run build
