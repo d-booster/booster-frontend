@@ -71,10 +71,4 @@ Supabase を採用しています。
 
 ORMは、prismaを採用しています。
 
-**新しくテーブルを作成したりカラムを追加する場合**
-
-1. prisma/shema.prisma ファイルを編集してスキーマを設定する
-2. `dotenv -e .env.local -- npx prisma db push` で、マイグレーションファイルを生成せず同期し動作確認する
-3. `make migrate` でマイグレーションを実行する
-
 
