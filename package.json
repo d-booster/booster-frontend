@@ -7,8 +7,7 @@
     "build": "next build",
     "start": "next start",
     "typecheck": "tsc --noEmit",
-    "check": "npx @biomejs/biome check --write src/",
-    "migrate:dev": "dotenv -e .env.local -- npx prisma migrate dev --name init"
+    "check": "npx @biomejs/biome check --write src/"
   },
   "dependencies": {
     "@nextui-org/react": "2.4.6",
