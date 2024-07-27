@@ -28,10 +28,10 @@ check: # formatとlintを実行
 .PHONY: migrate
 migrate:
 	@read -p "migration 名を入力: " name; \
-	dotenv -e .env.local -- npx prisma migrate dev --name $$name
+	npx dotenv -e .env.local -- npx prisma migrate dev --name $$name
 
 migrate-dev-local:
-	dotenv -e .env.local -- npx prisma migrate dev
+	npx dotenv -e .env.local -- npx prisma migrate dev
 
 .PHONY: generate
 generate:
