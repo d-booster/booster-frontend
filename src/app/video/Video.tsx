@@ -4,6 +4,7 @@ import dynamic from "next/dynamic";
 import React from "react";
 import { useRef, useState } from "react";
 import { Layer, Rect, Stage } from "react-konva";
+import Split from "react-split";
 
 const DynamicReactPlayer = dynamic(
   () => import("react-player"),
@@ -28,8 +29,8 @@ const ReactPlayerMemo = React.memo(function ReactPlayer({
       url="assets/sample.mp4"
       width="100%"
       height="100%"
-      onProgress={handleProgress}
       style={{ position: "absolute", top: 0, left: 0 }}
+      onProgress={handleProgress}
       controls={true}
       onError={(e) => console.error("ReactPlayer error:", e)}
       onReady={() => console.log("ReactPlayer is ready")}
@@ -96,41 +97,54 @@ const Video: React.FC = () => {
     isDrawing.current = false;
   };
 
+  const leftRef = useRef<HTMLDivElement>(null);
+  const stageHeight = window.innerHeight;
+
   return (
-    <>
-      <ReactPlayerMemo handleProgress={() => console.log("")} />
-      <Stage
-        width={window.innerWidth}
-        height={window.innerHeight - 80} // シークバーの高さ分を引く
-        onMouseDown={handleMouseDown}
-        onMouseMove={handleMouseMove}
-        onMouseUp={handleMouseUp}
-        ref={stageRef}
+    <Split className="flex" sizes={[75, 25]} minSize={1400}>
+      <div
+        style={{ backgroundColor: "red", position: "relative" }}
+        ref={leftRef}
       >
-        <Layer>
-          {selectedAreaList.map((selectedArea, i) => (
-            <Rect
-              // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
-              key={i}
-              x={selectedArea.x}
-              y={selectedArea.y}
-              width={selectedArea.width}
-              height={selectedArea.height}
-              stroke="black"
-            />
-          ))}
-          {newSelectedArea && (
-            <Rect
-              x={newSelectedArea.x}
-              y={newSelectedArea.y}
-              width={newSelectedArea.width}
-              height={newSelectedArea.height}
-              stroke="blue"
-            />
-          )}
-        </Layer>
-      </Stage>
-    </>
+        <>
+          <ReactPlayerMemo handleProgress={() => console.log("")} />
+          <Stage
+            width={leftRef.current?.offsetWidth}
+            height={stageHeight}
+            onMouseDown={handleMouseDown}
+            onMouseMove={handleMouseMove}
+            onMouseUp={handleMouseUp}
+            ref={stageRef}
+          >
+            <Layer>
+              {selectedAreaList.map((selectedArea, i) => (
+                <Rect
+                  // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+                  key={i}
+                  x={selectedArea.x}
+                  y={selectedArea.y}
+                  width={selectedArea.width}
+                  height={selectedArea.height}
+                  stroke="black"
+                />
+              ))}
+              {newSelectedArea && (
+                <Rect
+                  x={newSelectedArea.x}
+                  y={newSelectedArea.y}
+                  width={newSelectedArea.width}
+                  height={newSelectedArea.height}
+                  stroke="blue"
+                />
+              )}
+            </Layer>
+          </Stage>
+        </>
+      </div>
+      <div style={{ backgroundColor: "blue" }}>
+        <h1>右側のコンテンツ</h1>
+      </div>
+    </Split>
   );
 };
 
