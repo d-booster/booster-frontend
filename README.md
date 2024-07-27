@@ -34,12 +34,10 @@ npx simple-git-hooks
 ```bash
 # 起動
 npm run dev
-# コード整形
-npm run format
+# formatとlintを実行
+npm run check
 # タイプチェック
 npm run typecheck
-# lint
-npm run lint:eslint:fix
 ```
 
 ## 方針
