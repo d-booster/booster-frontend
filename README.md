@@ -27,9 +27,9 @@ $ npm i
 ```
 
 ### 環境変数
-`make run` 実行後にターミナルに表示される supabaseの `anon key` を、`.env.local` の`NEXT_PUBLIC_SUPABASE_ANON_KEY`に設定してください。
+初回の`make run` 実行後にターミナルに表示される supabaseの `anon key` (表示されない場合、`supabase status` を実行) を、`.env.local` ファイルの`NEXT_PUBLIC_SUPABASE_ANON_KEY`に設定してください。
 ```
-NEXT_PUBLIC_SUPABASE_ANON_KEY=eeeeeee.yyyyy.xxxxx
+NEXT_PUBLIC_SUPABASE_ANON_KEY=<ここに設定する>
 ```
 
 ### コマンド
