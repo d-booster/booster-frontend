@@ -20,15 +20,6 @@ https://qiita.com/chihiro/items/13652c461519f8922f56
 $ npm i
 ```
 
-git hooks
-
-```bash
-npx simple-git-hooks
-```
-
-上記コマンドにより .git/hooks/pre-commit の内容が更新されます。 なので初回のみ対応が必要です。
-これにより commit 前に `npm run pre-commit` を実行してくれるようになります。
-
 ### コマンド
 
 ```bash
