@@ -20,13 +20,19 @@ https://qiita.com/chihiro/items/13652c461519f8922f56
 $ npm i
 ```
 
+### 環境変数
+`make run` 実行後にターミナルに表示される supabaseの `anon key` を、`.env.local` の`NEXT_PUBLIC_SUPABASE_ANON_KEY`に設定してください。
+```
+NEXT_PUBLIC_SUPABASE_ANON_KEY=eeeeeee.yyyyy.xxxxx
+```
+
 ### コマンド
 
 ```bash
 # 起動
-npm run dev
+make run
 # formatとlintを実行
-npm run check
+make check
 # タイプチェック
 npm run typecheck
 ```
@@ -52,3 +58,7 @@ NextUI, TailwindCSS がインストールされています。
 https://nextui.org/docs/components/button
 
 NextUIで表現できない場合は、TailwindCSS を利用してください。
+
+### DB
+Supabase を採用しています。
+`make run` 起動後に http://127.0.0.1:54323 にアクセスすることでダッシュボードを利用できます。
