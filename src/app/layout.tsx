@@ -1,14 +1,9 @@
-<<<<<<< HEAD
+import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import "./globals.css";
-=======
-import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
 
-import './globals.css'
-import { Providers } from './providers'
->>>>>>> bb251b4e0fa4926329b4db71526291bbfc10a12e
+import "./globals.css";
+import { Providers } from "./providers";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,12 +15,8 @@ export const metadata: Metadata = {
 export default function RootLayout({
   children,
 }: Readonly<{
-<<<<<<< HEAD
   // biome-ignore lint/correctness/noUndeclaredVariables: <explanation>
   children: React.ReactNode;
-=======
-  children: React.ReactNode
->>>>>>> bb251b4e0fa4926329b4db71526291bbfc10a12e
 }>) {
   return (
     <html lang="en">

@@ -1,9 +1,5 @@
-<<<<<<< HEAD
+import { Button } from "@nextui-org/button";
 import Image from "next/image";
-=======
-import { Button } from '@nextui-org/button'
-import Image from 'next/image'
->>>>>>> bb251b4e0fa4926329b4db71526291bbfc10a12e
 
 export default function Home() {
   return (
