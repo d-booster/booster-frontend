@@ -4,6 +4,7 @@
 
 ### セットアップ
 **node**
+
 `node v20.0.0` が必要です。ローカルにインストールしてください
 
 ```bash
@@ -15,6 +16,7 @@ nodebrewを利用している場合はこちら
 https://qiita.com/chihiro/items/13652c461519f8922f56
 
 **Docker**
+
 supabaseをローカルで起動するためにDockerが必要です。Dockerがインストールされていない場合はインストールしてください。
 https://docs.docker.com/desktop/install/mac-install/
 
