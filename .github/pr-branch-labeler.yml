@@ -1,0 +1,8 @@
+feature:
+  head: "feature/*"
+
+fix:
+  head: "fix/*"
+
+hotfix:
+  head: "hotfix/*"
