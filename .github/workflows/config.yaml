@@ -1,6 +1,6 @@
 name: Node.js build workflow
 
-on: [push]
+on: [pull_request]
 
 jobs:
   build:
@@ -52,3 +52,7 @@ jobs:
   deploy:
     needs: [build]
     uses: ./.github/workflows/deploy.yaml
+    secrets:
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+      VERCEL_ORG_ID: ${{ secrets.ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ secrets.PROJECT_ID }}

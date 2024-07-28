@@ -1,11 +1,18 @@
 name: Deploy to Vercel
 
 env:
-  VERCEL_ORG_ID: ${{ secrets.ORG_ID }}
-  VERCEL_PROJECT_ID: ${{ secrets.PROJECT_ID }}
+  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 
 on:
   workflow_call:
+    secrets:
+      VERCEL_TOKEN:
+        required: true
+      VERCEL_ORG_ID:
+        required: true
+      VERCEL_PROJECT_ID:
+        required: true
 
 jobs:
   preview:
@@ -39,9 +46,10 @@ jobs:
         run: echo "url=$(vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }})" >> $GITHUB_OUTPUT
 
       - name: Comment to PR
+        if: ${{ github.event_name == 'pull_request' }}
         uses: thollander/actions-comment-pull-request@v2
         with:
-          message: "preview環境にデプロイしました!\n\n${{ steps.deploy-to-vercel.outputs.preview-url }}"
+          message: "preview環境にデプロイしました!\n\n${{ steps.deploy.outputs.url }}"
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   prod:
