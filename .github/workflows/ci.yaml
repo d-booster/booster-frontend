@@ -1,6 +1,6 @@
-name: Node.js build and Deploy Preview workflow
+name: CI workflow
 
-on: [pull_request]
+on: [push]
 
 jobs:
   build:
@@ -48,6 +48,44 @@ jobs:
 
       - name: Run build command
         run: npm run build
+
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: supabase/setup-cli@v1
+        with:
+          version: latest
+
+      - run: supabase db start
+      - run: supabase db lint
+      - run: supabase test db
+
+      - name: Verify generated types are checked in
+        run: |
+          supabase gen types typescript --local > src/types/supabase.gen.ts
+          if ! git diff --ignore-space-at-eol --exit-code --quiet src/types/supabase.gen.ts; then
+            echo "Detected uncommitted changes after build. See status below:"
+            git diff
+            exit 1
+          fi
+
+  dryrun:
+    runs-on: ubuntu-latest
+    env:
+      SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+      SUPABASE_DB_PASSWORD: ${{ github.base_ref == 'main' && secrets.PRODUCTION_DB_PASSWORD || secrets.STAGING_DB_PASSWORD }}
+      SUPABASE_PROJECT_ID: ${{ github.base_ref == 'main' && secrets.PRODUCTION_PROJECT_ID || secrets.STAGING_PROJECT_ID }}
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: supabase/setup-cli@v1
+        with:
+          version: latest
+
+      - run: supabase link --project-ref $SUPABASE_PROJECT_ID
+      - run: supabase db push --dry-run
 
   deploy-preview:
     needs: [build]
