@@ -3,7 +3,8 @@ name: Deploy (Preview)
 on:
   push:
     branches:
-      - develop
+      # - develop
+      - main # TODO: 後で変える
   workflow_dispatch:
 
 jobs: 
