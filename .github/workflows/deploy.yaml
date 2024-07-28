@@ -5,21 +5,11 @@ env:
   VERCEL_PROJECT_ID: ${{ secrets.PROJECT_ID }}
 
 on:
-  pull_request:
-    branches:
-      - main
-  push:
-    branches:
-      - main
-  workflow_run:
-    workflows: ["config.yaml"]
-    types:
-      - completed
+  workflow_call:
 
 jobs:
   preview:
-    if: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.ref == 'main' }}
-    needs: test
+    if: ${{ github.ref != 'refs/heads/main' }}
     runs-on: ubuntu-latest
     environment:
       name: preview
@@ -55,8 +45,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   prod:
-    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
-    needs: test
+    if: ${{ github.ref == 'refs/heads/main' }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
