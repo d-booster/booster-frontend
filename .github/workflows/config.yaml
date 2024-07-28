@@ -1,4 +1,4 @@
-name: Node.js build workflow
+name: Node.js build and Deploy Preview workflow
 
 on: [pull_request]
 
@@ -49,7 +49,7 @@ jobs:
       - name: Run build command
         run: npm run build
 
-  deploy:
+  deploy-preview:
     needs: [build]
     uses: ./.github/workflows/deploy.yaml
     secrets:
