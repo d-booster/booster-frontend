@@ -1,6 +1,13 @@
-name: Node.js build workflow
+name: CI workflow (npm)
 
-on: [push]
+on:
+  push:
+    paths:
+      - "public/**"
+      - "src/**"
+      - "package.json"
+      - "package-lock.json"
+      - ".github/workflows/**"
 
 jobs:
   build:
@@ -48,3 +55,13 @@ jobs:
 
       - name: Run build command
         run: npm run build
+
+  deploy-vercel:
+    needs: [build]
+    uses: ./.github/workflows/deploy.yaml
+    with:
+      deploy_environment: 'preview'
+    secrets:
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+      VERCEL_ORG_ID: ${{ secrets.ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ secrets.PROJECT_ID }}

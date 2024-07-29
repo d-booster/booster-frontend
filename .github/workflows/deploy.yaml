@@ -1,0 +1,68 @@
+name: Deploy to Vercel
+
+env:
+  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
+on:
+  workflow_call:
+    inputs:
+      deploy_environment:
+        type: string
+        description: 'デプロイ環境を指定 (preview or production)'
+        required: true
+        default: 'preview'
+    secrets:
+      VERCEL_TOKEN:
+        required: true
+      VERCEL_ORG_ID:
+        required: true
+      VERCEL_PROJECT_ID:
+        required: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: ${{ inputs.deploy_environment }}
+      url: ${{ steps.deploy.outputs.url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Read .node-version
+        run: echo "NODE_VERSION=$(cat .node-version)" >> $GITHUB_ENV
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install Vercel CLI
+        run: npm install --global vercel@latest
+
+      - name: Pull Vercel Environment Information
+        run: vercel pull --yes --environment=${{ inputs.deploy_environment }} --token=${{ secrets.VERCEL_TOKEN }}
+
+      - name: Build Project Artifacts
+        run: |
+          if [ "${{ inputs.deploy_environment }}" == "production" ]; then
+            vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
+          else
+            vercel build --token=${{ secrets.VERCEL_TOKEN }}
+          fi
+
+      - name: Deploy Project Artifacts to Vercel
+        id: deploy
+        run: |
+          if [ "${{ inputs.deploy_environment }}" == "production" ]; then
+            echo "url=$(vercel deploy --prod --prebuilt --token=${{ secrets.VERCEL_TOKEN }})" >> $GITHUB_OUTPUT
+          else
+            echo "url=$(vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }})" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Comment to PR
+        if: ${{ github.event_name == 'pull_request' && inputs.deploy_environment == 'preview' }}
+        uses: thollander/actions-comment-pull-request@v2
+        with:
+          message: "preview環境にデプロイしました!\n\n${{ steps.deploy.outputs.url }}"
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
