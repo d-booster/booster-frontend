@@ -59,6 +59,8 @@ jobs:
   deploy-vercel:
     needs: [build]
     uses: ./.github/workflows/deploy.yaml
+    with:
+      deploy_environment: 'preview'
     secrets:
       VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
       VERCEL_ORG_ID: ${{ secrets.ORG_ID }}
