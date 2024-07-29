@@ -1,4 +1,3 @@
-
 .PHONY: setup-local
 setup-local: ## ローカル環境用のセットアップを行う
 	@if [ ! -e .env.local ]; then \
@@ -37,6 +36,7 @@ migrate-dev-local:
 .PHONY: generate
 generate: ## コードの自動生成
 	npx prisma generate
+	supabase gen types typescript --local --schema public > src/types/supabase.gen.ts
 
 .PHONY: help
 help: ## 実行できるコマンドを一覧表示する
