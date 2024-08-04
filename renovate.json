@@ -26,6 +26,10 @@
       "major": {
         "automerge": false
       }
+    },
+    {
+      "matchPackageNames": ["node"],
+      "enabled": false
     }
   ]
 }
