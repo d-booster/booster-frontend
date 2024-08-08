@@ -69,10 +69,6 @@ NextUIで表現できない場合は、TailwindCSS を利用してください�
 Supabase を採用しています。
 `make run` 起動後に http://127.0.0.1:54323 にアクセスすることでダッシュボードを利用できます。
 
-ORMは、prismaを採用しています。
-DBのスキーマ定義やマイグレーション操作を行う場合、下記のドキュメントを参考にしてください。
-https://github.com/d-booster/booster-frontend/tree/ba0ac1c19de0359ce2447410739171d5576695a4/prisma#readme
-
-クライアントからのDBアクセスには、[supabase js](https://supabase.com/docs/reference/javascript/select) を利用します。
-ドキュメントはこちら https://supabase.com/docs/reference/javascript/select
+DBの定義やマイグレーション操作を行う場合、下記の記事を参考にしてください。
+https://ritaiz.com/articles/how-to-use-supabase-cli
 
