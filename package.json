@@ -11,7 +11,6 @@
   },
   "dependencies": {
     "@nextui-org/react": "2.4.6",
-    "@prisma/client": "5.17.0",
     "@supabase/supabase-js": "2.45.0",
     "framer-motion": "11.3.21",
     "konva": "9.3.14",
@@ -29,7 +28,6 @@
     "dotenv-cli": "7.4.2",
     "npm-run-all2": "5.0.0",
     "postcss": "^8",
-    "prisma": "5.17.0",
     "tailwindcss": "^3.4.1",
     "typescript": "^5"
   },

@@ -18,24 +18,22 @@ run-dev: ## npm run dev
 	npm run dev
 
 .PHONY: run
-run: setup-local run-supabase migrate-dev-local run-dev ## ローカルでアプリケーションを起動する
+run: setup-local run-supabase migrate-up run-dev ## ローカルでアプリケーションを起動する
 
 .PHONY: check
 check: ## formatとlintを実行
 	npm run check
-	npx prisma format
 
 .PHONY: migrate
-migrate: ## prismaで マイグレーションファイルを作成する
+migrate: ## supabase cliで マイグレーションファイルを作成する
 	@read -p "migration 名を入力: " name; \
-	npx dotenv -e .env.local -- npx prisma migrate dev --name $$name
+	npx dotenv -e .env.local -- supabase migration new $$name
 
-migrate-dev-local:
-	npx dotenv -e .env.local -- npx prisma migrate dev
+migrate-up:
+	npx dotenv -e .env.local -- supabase migration up
 
 .PHONY: generate
 generate: ## コードの自動生成
-	npx prisma generate
 	supabase gen types typescript --local --schema public > src/types/supabase.gen.ts
 
 .PHONY: help

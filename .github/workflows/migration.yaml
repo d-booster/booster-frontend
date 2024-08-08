@@ -1,11 +1,11 @@
-name: Prisma Migrate
+name: Migration
 
 on:
   push:
     branches: 
       - 'main'
     paths:
-      - 'prisma/**' # prismaディレクトリ配下に変更があったときのみ起動
+      - 'supabase/migrations/**' # migrationsディレクトリ配下に変更があったときのみ起動
   workflow_dispatch:
 
 jobs:
@@ -22,27 +22,14 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-
-      - name: Read .node-version
-        run: echo "NODE_VERSION=$(cat .node-version)" >> $GITHUB_ENV
-
-      - name: Use Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
       
       - name: Setup Supabase CLI
         uses: supabase/setup-cli@v1
         with:
           version: latest
 
-      - name: Install
-        run: npm install
-
-      - run: rm -rf node_modules/.prisma
-
       - name: Link Supabase Project
         run: supabase link --project-ref ${{ env.SUPABASE_PROJECT_ID }}
 
       - name: Deploy Migrations
-        run: npx prisma migrate deploy
+        run: supabase migration up --linked
